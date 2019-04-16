@@ -1,0 +1,13 @@
+# Mac OSX
+.DS_Store
+
+# Xcode 4+
+*.xcodeproj/*.mode*
+*.xcodeproj/*.perspective*
+*.xcodeproj/*.pbxuser
+*.xcodeproj/xcuserdata
+*.xcodeproj/project.xcworkspace/xcuserdata
+*.xcuserdatad
+*.xcworkspace/xcshareddata/*.xccheckout
+*.xcscmblueprint
+
