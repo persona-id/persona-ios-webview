@@ -10,6 +10,8 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UIImagePickerControllerDelegate {
 
+    var window: UIWindow?
+
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         picker.sourceType = .camera
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
