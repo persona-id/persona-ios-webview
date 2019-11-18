@@ -10,7 +10,7 @@ import WebKit
 
 class PersonaViewController: UIViewController, WKNavigationDelegate {
     let webView = WKWebView()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -27,7 +27,7 @@ class PersonaViewController: UIViewController, WKNavigationDelegate {
         webView.load(request)
     }
 
-    override var prefersStatusBarHidden : Bool {
+    override var prefersStatusBarHidden: Bool {
         return true
     }
 
@@ -37,7 +37,7 @@ class PersonaViewController: UIViewController, WKNavigationDelegate {
     }
 
     // getUrlParams :: parse query parameters into a Dictionary
-    func getUrlParams(url: URL) -> Dictionary<String, String> {
+    func getUrlParams(url: URL) -> [String: String] {
         var paramsDictionary = [String: String]()
         let queryItems = URLComponents(string: (url.absoluteString))?.queryItems
         queryItems?.forEach { paramsDictionary[$0.name] = $0.value }
@@ -49,7 +49,7 @@ class PersonaViewController: UIViewController, WKNavigationDelegate {
         let config = [
             "blueprint-id": "blu_PDGZKPEASz266wmRcPbuwjPP",
             "redirect-uri": "https://personademo.com",
-            "is-webview": "true",
+            "is-webview": "true"
         ]
 
         // Build a dictionary with the Persona configuration options
@@ -67,13 +67,13 @@ class PersonaViewController: UIViewController, WKNavigationDelegate {
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping ((WKNavigationActionPolicy) -> Void)) {
 
-        let actionType = navigationAction.request.url?.host;
+        let actionType = navigationAction.request.url?.host
         let queryParams = getUrlParams(url: navigationAction.request.url!)
 
-        if (actionType == "personademo.com") {
+        if actionType == "personademo.com" {
             // User succeeded verification
-            print("Inquiry Id: \(queryParams["inquiry-id"]!)");
-            print("Subject: \(queryParams["subject"]!)");
+            print("Inquiry Id: \(queryParams["inquiry-id"]!)")
+            print("Subject: \(queryParams["subject"]!)")
 
             // Do nothing
             // You will likely want to transition the view at this point.
