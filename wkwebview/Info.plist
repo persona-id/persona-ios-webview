@@ -30,8 +30,10 @@
 		<string>video-camera</string>
 		<string>still-camera</string>
 	</array>
-	<key>privacy - Photo Library Usage Description</key>
-	<string>We require a file upload to verify your identity</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We require a file upload to verify your identity.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We require a file upload to verify your identity.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
