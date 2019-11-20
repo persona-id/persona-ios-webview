@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3AD4D28B2385E55C0084B5C1 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD4D28A2385E55C0084B5C1 /* StartViewController.swift */; };
 		7C7661DF1DC2B1700091C8DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7661DE1DC2B1700091C8DD /* AppDelegate.swift */; };
 		7C7661E41DC2B1700091C8DD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C7661E21DC2B1700091C8DD /* Main.storyboard */; };
 		7C7661E61DC2B1700091C8DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C7661E51DC2B1700091C8DD /* Assets.xcassets */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3AD4D28A2385E55C0084B5C1 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		7C7661DB1DC2B1700091C8DD /* wkwebview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wkwebview.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C7661DE1DC2B1700091C8DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7C7661E31DC2B1700091C8DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -55,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				7C7661DE1DC2B1700091C8DD /* AppDelegate.swift */,
+				3AD4D28A2385E55C0084B5C1 /* StartViewController.swift */,
 				7C9811BE1DC7F62B00A4EA98 /* PersonaViewController.swift */,
 				7C7661E21DC2B1700091C8DD /* Main.storyboard */,
 				7C7661E51DC2B1700091C8DD /* Assets.xcassets */,
@@ -96,6 +99,7 @@
 				TargetAttributes = {
 					7C7661DA1DC2B1700091C8DD = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = T4KA3Q47RS;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -138,6 +142,7 @@
 			files = (
 				7C7661DF1DC2B1700091C8DD /* AppDelegate.swift in Sources */,
 				7C9811BF1DC7F62B00A4EA98 /* PersonaViewController.swift in Sources */,
+				3AD4D28B2385E55C0084B5C1 /* StartViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,7 +281,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = T4KA3Q47RS;
 				INFOPLIST_FILE = wkwebview/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = persona.wkwebview;
@@ -289,7 +294,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = T4KA3Q47RS;
 				INFOPLIST_FILE = wkwebview/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = persona.wkwebview;
