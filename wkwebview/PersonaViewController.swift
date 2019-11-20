@@ -8,30 +8,49 @@
 import UIKit
 import WebKit
 
+/// Delegate methods that get called once a verification is completed.
+protocol PersonaViewControllerDelegate: class {
+    /// Verification completed successfully.
+    func verificationSucceeded(viewController: PersonaViewController, inquiryId: String)
+
+    /// Verification failed.
+    func verificationFailed(viewController: PersonaViewController)
+}
+
+/// Wrapper around a web view that handles the verification.
 class PersonaViewController: UIViewController {
 
-    lazy private var webView: WKWebView = {
-        let webView = WKWebView()
-        webView.navigationDelegate = self
-        webView.allowsBackForwardNavigationGestures = false
-        webView.frame = view.frame
-        webView.scrollView.bounces = false
-        return webView
-    }()
+    /// The URL to redirect to once the verification is complete
+    private let redirectUri = "https://personademo.com"
+
+    // The web view.
+    private let webView = WKWebView()
+
+    // The delegate that gets called when verification is complete.
+    weak var delegate: PersonaViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        addWebView()
 
-        // Add the web view
-        view.addSubview(webView)
+        // The dictionary with the Persona configuration options
+        // See the Persona docs (http://documentation.withpersona.com) for full documentation.
+        let config = [
+            "template-id": "tmpl_JAZjHuAT738Q63BdgCuEJQre",
+            "environment": "sandbox",
+            "reference-id": "myReference",
+            "redirect-uri": redirectUri,
+            "is-webview": "true"
+        ]
 
-        // Load the Persona URL request
-        let request = createPersonaInitializationURLRequest()
+        // Create query items for the configuration dictionary
+        var components = URLComponents(string: "https://withpersona.com/verify")
+        components?.queryItems = config.map { URLQueryItem(name: $0, value: $1) }
+
+        // Create and load the Persona URL request
+        guard let urlString = components?.string, let url = URL(string: urlString) else { return }
+        let request = URLRequest(url: url)
         webView.load(request)
-    }
-
-    override var prefersStatusBarHidden: Bool {
-        return true
     }
 }
 
@@ -41,28 +60,27 @@ extension PersonaViewController: WKNavigationDelegate {
 
     /// Handle navigation actions from the web view.
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-
-        guard let host = navigationAction.request.url?.host, host == "personademo.com" else {
-            // Unknown case - do not override URL loading
+        // Check if we are being redirected to our `redirectUri`. This happens once verification is completed.
+        guard let redirectUri = navigationAction.request.url?.absoluteString, redirectUri.starts(with: self.redirectUri) else {
+            // We're not being redirected, so load the URL.
             decisionHandler(.allow)
             return
         }
 
-        // User succeeded verification.
-        // Parse the query parameters and print them out.
-        let queryParams = parseQueryParameters(url: navigationAction.request.url)
-        if let inquiryId = queryParams?["inquiry-id"] {
-            print("Inquiry Id: \(inquiryId)")
-        }
-        if let subject = queryParams?["subject"] {
-            print("Subject: \(subject)")
-        }
-        if let referenceId = queryParams?["reference-id"] {
-            print("Reference ID: \(referenceId)")
+        // At this point we're done, so we don't need to load the URL.
+        decisionHandler(.cancel)
+
+        // Get the inquiryId from the query string parameters.
+        guard let queryParams = parseQueryParameters(url: navigationAction.request.url),
+            let inquiryId = queryParams["inquiry-id"] else {
+
+            // If we do not have an inquiry ID we know we have failed verification.
+            delegate?.verificationFailed(viewController: self)
+            return
         }
 
-        // You will likely want to transition the view at this point.
-        decisionHandler(.cancel)
+        // If we have an inquiry ID we know we have passed verification.
+        delegate?.verificationSucceeded(viewController: self, inquiryId: inquiryId)
     }
 }
 
@@ -70,26 +88,20 @@ extension PersonaViewController: WKNavigationDelegate {
 
 extension PersonaViewController {
 
-    /// Creates the Persona URL request with query parameters
-    private func createPersonaInitializationURLRequest() -> URLRequest {
-        let config = [
-            "template-id": "tmpl_JAZjHuAT738Q63BdgCuEJQre",
-            "environment": "sandbox",
-            "redirect-uri": "https://personademo.com",
-            "is-webview": "true"
-        ]
-
-        // Build a dictionary with the Persona configuration options
-        // See the Persona docs (http://documentation.withpersona.com) for full documentation.
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "withpersona.com"
-        components.path = "/verify"
-        components.queryItems = config.map { URLQueryItem(name: $0, value: $1) }
-
-        let urlString = components.string!
-        let url = URL(string: urlString)!
-        return URLRequest(url: url)
+    /// Set up and add the web view
+    private func addWebView() {
+        webView.navigationDelegate = self
+        webView.allowsBackForwardNavigationGestures = false
+        webView.scrollView.bounces = false
+        // Add the web view and set up its contstraints
+        view.addSubview(webView)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            webView.topAnchor.constraint(equalTo: view.topAnchor),
+            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
 
     /// Parses query parameters into a Dictionary
