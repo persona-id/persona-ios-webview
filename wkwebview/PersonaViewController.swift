@@ -33,19 +33,16 @@ class PersonaViewController: UIViewController {
         super.viewDidLoad()
         addWebView()
 
-        // The dictionary with the Persona configuration options
+        // Add the Persona configuration options as query items.
         // See the Persona docs (http://documentation.withpersona.com) for full documentation.
-        let config = [
-            "template-id": "tmpl_JAZjHuAT738Q63BdgCuEJQre",
-            "environment": "sandbox",
-            "reference-id": "myReference",
-            "redirect-uri": redirectUri,
-            "is-webview": "true"
-        ]
-
-        // Create query items for the configuration dictionary
         var components = URLComponents(string: "https://withpersona.com/verify")
-        components?.queryItems = config.map { URLQueryItem(name: $0, value: $1) }
+        components?.queryItems = [
+            URLQueryItem(name: "template-id", value: "tmpl_JAZjHuAT738Q63BdgCuEJQre"),
+            URLQueryItem(name: "environment", value: "sandbox"),
+            URLQueryItem(name: "reference-id", value: "myReference"),
+            URLQueryItem(name: "redirect-uri", value: redirectUri),
+            URLQueryItem(name: "is-webview", value: "true")
+        ]
 
         // Create and load the Persona URL request
         guard let urlString = components?.string, let url = URL(string: urlString) else { return }
