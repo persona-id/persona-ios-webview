@@ -24,7 +24,13 @@ class PersonaViewController: UIViewController {
     private let redirectUri = "https://personademo.com"
 
     // The web view.
-    private let webView = WKWebView()
+    private lazy var webView: WKWebView = {
+        let config = WKWebViewConfiguration()
+        config.allowsInlineMediaPlayback = true
+        
+        let webView = WKWebView(frame: .zero, configuration: config)
+        return webView
+    }()
 
     // The delegate that gets called when verification is complete.
     weak var delegate: PersonaViewControllerDelegate?
