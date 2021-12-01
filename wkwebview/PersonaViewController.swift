@@ -43,7 +43,7 @@ class PersonaViewController: UIViewController {
         // See the Persona docs (http://documentation.withpersona.com) for full documentation.
         var components = URLComponents(string: "https://withpersona.com/verify")
         components?.queryItems = [
-            URLQueryItem(name: "template-id", value: "tmpl_JAZjHuAT738Q63BdgCuEJQre"),
+            URLQueryItem(name: "inquiry-template-id", value: "itmpl_Ygs16MKTkA6obnF8C3Rb17dm"),
             URLQueryItem(name: "environment", value: "sandbox"),
             URLQueryItem(name: "reference-id", value: "myReference"),
             URLQueryItem(name: "redirect-uri", value: redirectUri),
