@@ -9,7 +9,7 @@ import UIKit
 import WebKit
 
 /// Delegate methods that get called once a verification is completed.
-protocol PersonaViewControllerDelegate: class {
+protocol PersonaViewControllerDelegate: AnyObject {
     /// Verification completed successfully.
     func verificationSucceeded(viewController: PersonaViewController, inquiryId: String)
 
@@ -19,13 +19,20 @@ protocol PersonaViewControllerDelegate: class {
 
 /// Wrapper around a web view that handles the verification.
 class PersonaViewController: UIViewController {
+    /// The template you want to load
+    private let inquiryTemplateId = "itmpl_y3B7qEELMkQ8XogGev77QsZn"
+    
+    /// A unique identifier to associate the inquiry to an account
+    private let referenceId = "myReference"
 
     /// The URL to redirect to once the verification is complete
-    private let redirectUri = "https://personademo.com"
+    private let redirectUri = "https://withpersona.com"
 
     // The web view.
     private lazy var webView: WKWebView = {
         let config = WKWebViewConfiguration()
+        // Very important!
+        // Without this, the camera feed element will enter fullscreen mode by default.
         config.allowsInlineMediaPlayback = true
         
         let webView = WKWebView(frame: .zero, configuration: config)
@@ -40,12 +47,12 @@ class PersonaViewController: UIViewController {
         addWebView()
 
         // Add the Persona configuration options as query items.
-        // See the Persona docs (http://documentation.withpersona.com) for full documentation.
-        var components = URLComponents(string: "https://withpersona.com/verify")
+        // See the Persona docs (http://docs.withpersona.com) for full documentation.
+        var components = URLComponents(string: "https://inquiry.withpersona.com/verify")
         components?.queryItems = [
-            URLQueryItem(name: "template-id", value: "tmpl_JAZjHuAT738Q63BdgCuEJQre"),
+            URLQueryItem(name: "inquiry-template-id", value: inquiryTemplateId),
             URLQueryItem(name: "environment", value: "sandbox"),
-            URLQueryItem(name: "reference-id", value: "myReference"),
+            URLQueryItem(name: "reference-id", value: referenceId),
             URLQueryItem(name: "redirect-uri", value: redirectUri),
             URLQueryItem(name: "is-webview", value: "true")
         ]
@@ -99,11 +106,14 @@ extension PersonaViewController {
         // Add the web view and set up its contstraints
         view.addSubview(webView)
         webView.translatesAutoresizingMaskIntoConstraints = false
+        // Account for iPhone notch
+        let g = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            webView.topAnchor.constraint(equalTo: view.topAnchor),
-            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            // constrain web view to all 4 sides of the Safe Area
+            webView.topAnchor.constraint(equalTo: g.topAnchor, constant: 0.0),
+            webView.leadingAnchor.constraint(equalTo: g.leadingAnchor, constant: 0.0),
+            webView.trailingAnchor.constraint(equalTo: g.trailingAnchor, constant: 0.0),
+            webView.bottomAnchor.constraint(equalTo: g.bottomAnchor, constant: 0.0),
         ])
     }
 
